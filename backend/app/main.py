@@ -13,6 +13,7 @@ from app.requests.models import RequestStatusHistory
 from app.payments.models import Payment
 from app.notifications.models import Notification
 from app.reviews.models import Review
+from app.auth.routes import router as auth_router
 
 
 app = FastAPI(
@@ -20,6 +21,8 @@ app = FastAPI(
     description="Service and Maintenance Management System",
     version="1.0.0",
 )
+
+app.include_router(auth_router)
 
 
 @app.get("/")
