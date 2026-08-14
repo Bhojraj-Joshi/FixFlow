@@ -35,11 +35,12 @@ def register_user(
 
     # 3. Create User
     user = User(
-    name=user_data.full_name,
-    email=user_data.email,
-    password_hash=hashed_password,
-    role=user_data.role,
-)
+        name=user_data.full_name,
+        email=user_data.email,
+        password_hash=hashed_password,
+        role=user_data.role,
+    )
+
     db.add(user)
     db.flush()
 
@@ -64,4 +65,43 @@ def register_user(
     db.commit()
     db.refresh(user)
 
+    return user
+
+
+def verify_password(
+    password: str,
+    hashed_password: str
+) -> bool:
+    import bcrypt
+
+    return bcrypt.checkpw(
+        password.encode("utf-8"),
+        hashed_password.encode("utf-8")
+    )
+
+
+def login_user(
+    email: str,
+    password: str,
+    db: Session,
+):
+    # 1. Find user by email
+    user = (
+        db.query(User)
+        .filter(User.email == email)
+        .first()
+    )
+
+    # 2. User not found
+    if not user:
+        return None
+
+    # 3. Verify password
+    if not verify_password(
+        password,
+        user.password_hash
+    ):
+        return None
+
+    # 4. Return authenticated user
     return user

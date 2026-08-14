@@ -14,6 +14,7 @@ from app.payments.models import Payment
 from app.notifications.models import Notification
 from app.reviews.models import Review
 from app.auth.routes import router as auth_router
+from app.services.routes import router as services_router
 
 
 app = FastAPI(
@@ -23,6 +24,7 @@ app = FastAPI(
 )
 
 app.include_router(auth_router)
+app.include_router(services_router)
 
 
 @app.get("/")

@@ -7,4 +7,7 @@ class UserRegisterSchema(BaseModel):
     password: str = Field(min_length=8, max_length=100)
     role: str
 
-    
+
+class UserLoginSchema(BaseModel):
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=100)
